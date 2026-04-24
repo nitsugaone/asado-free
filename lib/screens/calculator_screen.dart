@@ -4,6 +4,9 @@ import '../services/calculadora_service.dart';
 import '../services/storage_service.dart';
 import '../flavors/flavor_config.dart';
 import '../widgets/banner_ad_widget.dart';
+import '../models/tipo_carne_pro.dart';
+import '../services/calculadora_pro_service.dart';
+import '../widgets/selector_carnes_pro.dart';
 
 class CalculatorScreen extends StatefulWidget {
   const CalculatorScreen({super.key});
@@ -18,6 +21,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
   late ParametrosAsado _params;
   late ResultadoAsado _resultado;
+
+  // Estado Pro: mezcla de carnes
+  List<SeleccionCarne> _seleccionCarnes = CalculadoraProService.seleccionDefault();
+  double _totalKgCarnesPro = 0.0;
+  final _calculadoraPro = CalculadoraProService();
 
   @override
   void initState() {
@@ -47,8 +55,24 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     setState(() {
       _params = nuevos;
       _resultado = _calculadora.calcular(_params);
+      if (FlavorConfig.instance.isPro) {
+        _totalKgCarnesPro = _calculadoraPro.totalKgCrudos(
+          personas: _params.personas,
+          seleccion: _seleccionCarnes,
+        );
+      }
     });
     _storage.guardarParametros(_params);
+  }
+
+  void _onSeleccionCarnesChanged(List<SeleccionCarne> nueva) {
+    setState(() {
+      _seleccionCarnes = nueva;
+      _totalKgCarnesPro = _calculadoraPro.totalKgCrudos(
+        personas: _params.personas,
+        seleccion: _seleccionCarnes,
+      );
+    });
   }
 
   Color _alertaColor() {
@@ -97,6 +121,15 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
               // --- Panel Pro termodinámico ---
               if (mostrarPanelPro) _buildPanelTermodinamico(),
+              // Panel de mezcla de carnes (solo Pro)
+              if (FlavorConfig.instance.isPro) ...[
+                const SizedBox(height: 12),
+                SelectorCarnesPro(
+                  seleccionInicial: _seleccionCarnes,
+                  personas: _params.personas,
+                  onChanged: _onSeleccionCarnesChanged,
+                ),
+              ],
             ],
           ),
         ),
