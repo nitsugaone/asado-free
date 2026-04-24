@@ -17,6 +17,7 @@ class StorageService {
 
   static const _keyUltimosParametros = 'ultimos_parametros';
   static const _keyHistorial = 'historial_calculos';
+  static const _keyIsPro = 'is_pro_purchased';
 
   /// Guarda los últimos parámetros usados para restaurarlos al abrir la app.
   Future<void> guardarParametros(ParametrosAsado p) async {
@@ -68,5 +69,16 @@ class StorageService {
   /// Limpia todos los datos almacenados.
   Future<void> limpiarTodo() async {
     await _storage.deleteAll();
+  }
+
+  /// Guarda el estado de si la versión Pro fue comprada.
+  Future<void> setProStatus(bool isPro) async {
+    await _storage.write(key: _keyIsPro, value: isPro.toString());
+  }
+
+  /// Carga el estado de si la versión Pro fue comprada.
+  Future<bool> getProStatus() async {
+    final raw = await _storage.read(key: _keyIsPro);
+    return raw == 'true';
   }
 }

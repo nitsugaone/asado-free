@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../flavors/flavor_config.dart';
+import '../app_state.dart';
 
 /// Banner publicitario que solo se renderiza en la versión Free.
 /// Se muestra en la parte inferior de la pantalla (rectangulo chico, no invasivo).
@@ -22,8 +23,8 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
   @override
   void initState() {
     super.initState();
-    // Solo cargar ads en versión Free
-    if (!FlavorConfig.instance.showAds) return;
+    // Solo cargar ads si el flavor dice showAds Y no somos Pro
+    if (!FlavorConfig.instance.showAds || AppState.instance.isPro) return;
     _loadAd();
   }
 
@@ -54,7 +55,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (!FlavorConfig.instance.showAds || !_isLoaded || _bannerAd == null) {
+    if (!FlavorConfig.instance.showAds || AppState.instance.isPro || !_isLoaded || _bannerAd == null) {
       return const SizedBox.shrink();
     }
     return Container(

@@ -7,6 +7,7 @@ import '../widgets/banner_ad_widget.dart';
 import '../models/tipo_carne_pro.dart';
 import '../services/calculadora_pro_service.dart';
 import '../widgets/selector_carnes_pro.dart';
+import '../app_state.dart';
 
 class CalculatorScreen extends StatefulWidget {
   const CalculatorScreen({super.key});
@@ -55,7 +56,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     setState(() {
       _params = nuevos;
       _resultado = _calculadora.calcular(_params);
-      if (FlavorConfig.instance.isPro) {
+      if (AppState.instance.isPro) {
         _totalKgCarnesPro = _calculadoraPro.totalKgCrudos(
           personas: _params.personas,
           seleccion: _seleccionCarnes,
@@ -86,58 +87,62 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isPro = FlavorConfig.instance.isPro;
-    final mostrarPanelPro = _params.escenario != Escenario.quincho;
+    return ValueListenableBuilder<bool>(
+      valueListenable: AppState.instance.isProNotifier,
+      builder: (context, isPro, child) {
+        final mostrarPanelPro = _params.escenario != Escenario.quincho;
 
-    return Scaffold(
-      bottomNavigationBar: const BannerAdWidget(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              // --- Header ---
-              _buildHeader(isPro),
-              const SizedBox(height: 16),
+        return Scaffold(
+          bottomNavigationBar: const BannerAdWidget(),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  // --- Header ---
+                  _buildHeader(isPro, mostrarPanelPro),
+                  const SizedBox(height: 16),
 
-              // --- Resumen rápido ---
-              _buildResumen(),
-              const SizedBox(height: 16),
+                  // --- Resumen rápido ---
+                  _buildResumen(),
+                  const SizedBox(height: 16),
 
-              // --- Título ---
-              Text(
-                'Lista de Compras para ${_params.personas} personas',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  // --- Título ---
+                  Text(
+                    'Lista de Compras para ${_params.personas} personas',
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // --- Items ---
+                  _buildItems(),
+                  const SizedBox(height: 16),
+
+                  // --- Controles ---
+                  _buildControles(),
+                  const SizedBox(height: 12),
+
+                  // --- Panel Pro termodinámico ---
+                  if (mostrarPanelPro) _buildPanelTermodinamico(),
+                  // Panel de mezcla de carnes (solo Pro)
+                  if (isPro) ...[
+                    const SizedBox(height: 12),
+                    SelectorCarnesPro(
+                      seleccionInicial: _seleccionCarnes,
+                      personas: _params.personas,
+                      onChanged: _onSeleccionCarnesChanged,
+                    ),
+                  ],
+                ],
               ),
-              const SizedBox(height: 12),
-
-              // --- Items ---
-              _buildItems(),
-              const SizedBox(height: 16),
-
-              // --- Controles ---
-              _buildControles(),
-              const SizedBox(height: 12),
-
-              // --- Panel Pro termodinámico ---
-              if (mostrarPanelPro) _buildPanelTermodinamico(),
-              // Panel de mezcla de carnes (solo Pro)
-              if (FlavorConfig.instance.isPro) ...[
-                const SizedBox(height: 12),
-                SelectorCarnesPro(
-                  seleccionInicial: _seleccionCarnes,
-                  personas: _params.personas,
-                  onChanged: _onSeleccionCarnesChanged,
-                ),
-              ],
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildHeader(bool isPro) {
+  Widget _buildHeader(bool isPro, bool mostrarPanelPro) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(

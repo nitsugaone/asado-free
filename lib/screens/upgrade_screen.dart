@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/purchase_service.dart';
+import '../app_state.dart';
 
 /// Pantalla de upgrade Free → Pro.
 /// Solo se muestra desde la versión Free.
@@ -30,14 +31,20 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
     super.dispose();
   }
 
-  void _onExito() {
+  Future<void> _onExito() async {
     setState(() { _cargando = false; _mensaje = null; });
+    
+    // Desbloquear versión Pro instantáneamente y guardar estado
+    await AppState.instance.unlockPro();
+
+    if (!mounted) return;
+    
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: const Color(0xFF242424),
         title: const Text('¡Bienvenido a Pro!', style: TextStyle(color: Color(0xFFA78BFA))),
-        content: const Text('Reiniciá la app para activar todas las funciones Pro.'),
+        content: const Text('¡Gracias por tu compra! Todas las funciones Pro ya están desbloqueadas.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
