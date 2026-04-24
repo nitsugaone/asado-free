@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+    <!-- ── Identidad ── -->
+    <key>CFBundleIdentifier</key>
+    <string>com.olmosle.asado</string>
+
+    <key>CFBundleName</key>
+    <string>Asador Patagónico</string>
+
+    <key>CFBundleDisplayName</key>
+    <string>Asador Patagónico</string>
+
+    <key>CFBundleVersion</key>
+    <string>1</string>
+
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
+
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+
+    <key>CFBundleSignature</key>
+    <string>????</string>
+
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+
+    <!-- ── Orientaciones ── -->
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+
+    <!-- ── Flutter ── -->
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+
+    <key>UIMainStoryboardFile</key>
+    <string>Main</string>
+
+    <!-- Deshabilitar rotación automática del Flutter engine -->
+    <key>UINSApplicationDelegateClassName</key>
+    <string>AppDelegate</string>
+
+    <!-- ── Apariencia ── -->
+    <!-- Forzar dark mode para consistencia con el diseño -->
+    <key>UIUserInterfaceStyle</key>
+    <string>Dark</string>
+
+    <!-- Splash screen nativo iOS -->
+    <key>UILaunchStoryboardName</key>
+    <string>LaunchScreen</string>
+
+    <!-- Status bar oscura -->
+    <key>UIStatusBarStyle</key>
+    <string>UIStatusBarStyleLightContent</string>
+    <key>UIViewControllerBasedStatusBarAppearance</key>
+    <false/>
+
+    <!-- ── Permisos (solo los necesarios) ── -->
+    <!-- No se piden permisos de cámara, ubicación, etc.
+         Solo los requeridos por las dependencias: -->
+
+    <!-- flutter_secure_storage usa Keychain — no requiere plist adicional -->
+    <!-- google_mobile_ads requiere App Tracking Transparency en iOS 14+ -->
+    <key>NSUserTrackingUsageDescription</key>
+    <string>Esta app muestra publicidad. Permitir el seguimiento ayuda a mostrar anuncios más relevantes.</string>
+
+    <!-- SKAdNetwork para Google Ads -->
+    <key>SKAdNetworkItems</key>
+    <array>
+        <dict>
+            <key>SKAdNetworkIdentifier</key>
+            <string>cstr6suwn9.skadnetwork</string>
+        </dict>
+        <dict>
+            <key>SKAdNetworkIdentifier</key>
+            <string>4fzdc2evr5.skadnetwork</string>
+        </dict>
+    </array>
+
+    <!-- AdMob App ID para iOS — reemplazar con ID real antes de publicar -->
+    <key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-3940256099942544~1458002511</string>
+    <!-- ↑ ID de prueba de Google. Reemplazar en producción. -->
+
+    <!-- ── Capabilities ── -->
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
+    <!-- ↑ false porque usamos solo los algoritmos del OS (Keychain).
+         Si usáramos cifrado propio, sería true y requeriría declaración de exportación. -->
+
+</dict>
+</plist>

@@ -1,0 +1,21 @@
+# Configuración para flutter_launcher_icons
+# Correr con: flutter pub run flutter_launcher_icons
+# Genera todos los tamaños para Android (mipmap) e iOS (AppIcon.appiconset)
+
+flutter_launcher_icons:
+  # Imagen fuente 1024x1024
+  image_path: "assets/icon/icon.png"
+
+  # Android
+  android: true
+  min_sdk_android: 21
+  adaptive_icon_background: "#1A1A1A"   # fondo oscuro para adaptive icon (Android 8+)
+  adaptive_icon_foreground: "assets/icon/icon.png"
+
+  # iOS
+  ios: true
+  remove_alpha_ios: true   # App Store no acepta íconos con canal alpha
+
+  # Web (por si en el futuro se agrega soporte PWA)
+  web:
+    generate: false
