@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.olmosle.asado">
+
+    <!-- Requerido por Google Mobile Ads (versión Free) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Requerido por in_app_purchase (billing) -->
+    <uses-permission android:name="com.android.vending.BILLING" />
+
+    <application
+        android:label="@string/app_name"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:theme="@style/LaunchTheme">
+
+        <!-- AdMob App ID — reemplazar con ID real antes de publicar -->
+        <!-- Free: ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX -->
+        <!-- Pro: no necesita este meta-data, pero no rompe si está -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+        <!-- ↑ ID de prueba de Google. Reemplazar en producción. -->
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Flutter plugin para flutter_secure_storage -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+
+    </application>
+</manifest>

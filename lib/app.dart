@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'flavors/flavor_config.dart';
 import 'screens/calculator_screen.dart';
+import 'screens/upgrade_screen.dart';
 
 class AsadorApp extends StatelessWidget {
   const AsadorApp({super.key});
@@ -19,6 +20,9 @@ class AsadorApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const CalculatorScreen(),
+      routes: {
+        '/upgrade': (_) => const UpgradeScreen(),
+      },
     );
   }
 }

@@ -153,6 +153,25 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               ],
             ),
           ),
+          // Botón upgrade (solo versión Free)
+          if (!isPro)
+            GestureDetector(
+              onTap: () => Navigator.of(context).pushNamed('/upgrade'),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF7C3AED).withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: const Color(0xFF7C3AED).withOpacity(0.5)),
+                ),
+                child: const Column(
+                  children: [
+                    Text('PRO', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFFA78BFA))),
+                    Text('Obtener', style: TextStyle(fontSize: 10, color: Color(0xFF9CA3AF))),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
     );
