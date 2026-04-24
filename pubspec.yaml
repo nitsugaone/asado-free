@@ -1,0 +1,40 @@
+name: asador_patagonico
+description: Calculadora de asado para Río Gallegos y la Patagonia.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI
+  cupertino_icons: ^1.0.6
+
+  # Almacenamiento cifrado
+  flutter_secure_storage: ^9.0.0
+
+  # Ads (solo activo en flavor free)
+  google_mobile_ads: ^4.0.0
+
+  # Billing (compra de versión Pro desde la free)
+  in_app_purchase: ^3.1.13
+
+  # Preferencias locales
+  shared_preferences: ^2.2.2
+
+  # Íconos extra
+  flutter_svg: ^2.0.9
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
