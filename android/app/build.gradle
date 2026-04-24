@@ -1,5 +1,14 @@
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+
+// Cargar key.properties si existe (local o CI)
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     compileSdkVersion 34
+    namespace "com.olmosle.asado"
 
     defaultConfig {
         applicationId "com.olmosle.asado"
@@ -7,8 +16,23 @@ android {
         targetSdkVersion 34
         versionCode 1
         versionName "1.0.0"
+        multiDexEnabled true
     }
 
+    // ── Firma de release ──
+    signingConfigs {
+        release {
+            // Si no hay key.properties (debug local sin firma), usar debug keystore
+            if (keystorePropertiesFile.exists()) {
+                keyAlias     keystoreProperties['keyAlias']
+                keyPassword  keystoreProperties['keyPassword']
+                storeFile    file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
+        }
+    }
+
+    // ── Flavors ──
     flavorDimensions "version"
 
     productFlavors {
@@ -16,22 +40,46 @@ android {
             dimension "version"
             applicationIdSuffix ".free"
             versionNameSuffix "-free"
+            resValue "string", "admob_app_id", "ca-app-pub-3940256099942544~3347511713"
+            // ↑ Reemplazar con tu ID de AdMob real antes de publicar
         }
         pro {
             dimension "version"
             applicationIdSuffix ".pro"
             versionNameSuffix "-pro"
+            // Pro no muestra ads, el meta-data de AdMob no es necesario
         }
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            debuggable true
+        }
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    // Excluir librerías nativas duplicadas (necesario para libsignal si se agrega)
+    packagingOptions {
+        pickFirst 'lib/x86/libcrypto.so'
+        pickFirst 'lib/x86_64/libcrypto.so'
+        pickFirst 'lib/armeabi-v7a/libcrypto.so'
+        pickFirst 'lib/arm64-v8a/libcrypto.so'
     }
 }
 
 dependencies {
     implementation 'androidx.security:security-crypto:1.1.0-alpha06'
+    implementation 'androidx.multidex:multidex:2.0.1'
 }

@@ -12,9 +12,11 @@ build/
 android/.gradle/
 android/captures/
 android/local.properties
-android/key.properties
-*.jks
+android/key.properties       # NUNCA subir — contiene contraseñas del keystore
+*.jks                        # NUNCA subir — es la clave privada de firma
 *.keystore
+android/app/*.jks
+android/app/*.b64            # base64 del keystore, solo para uso en CI setup
 
 # iOS
 ios/.symlinks/
