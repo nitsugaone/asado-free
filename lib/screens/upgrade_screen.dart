@@ -117,32 +117,41 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
                           : const Color(0xFFF59E0B),
                     )),
               ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF7C3AED),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                onPressed: _cargando ? null : () async {
-                  setState(() { _cargando = true; _mensaje = null; });
-                  await _purchaseService.comprarPro();
-                },
-                child: _cargando
-                    ? const SizedBox(width: 20, height: 20,
-                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                    : const Text('Comprar versión Pro', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              ),
-            ),
-            const SizedBox(height: 12),
-
-            // Restaurar compra
-            TextButton(
-              onPressed: () => _purchaseService.restaurarCompras(),
-              child: const Text('Restaurar compra anterior',
-                  style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 13)),
+            ValueListenableBuilder<bool>(
+              valueListenable: AppState.instance.isProNotifier,
+              builder: (context, isPro, _) {
+                return Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isPro ? const Color(0xFF4B5563) : const Color(0xFF7C3AED),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        onPressed: (isPro || _cargando) ? null : () async {
+                          setState(() { _cargando = true; _mensaje = null; });
+                          await _purchaseService.comprarPro();
+                        },
+                        child: _cargando
+                            ? const SizedBox(width: 20, height: 20,
+                                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                            : Text(isPro ? 'Ya eres Pro' : 'Comprar versión Pro', 
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    // Restaurar compra
+                    TextButton(
+                      onPressed: isPro ? null : () => _purchaseService.restaurarCompras(),
+                      child: const Text('Restaurar compra anterior',
+                          style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 13)),
+                    ),
+                  ],
+                );
+              },
             ),
             const SizedBox(height: 8),
             const Text(

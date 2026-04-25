@@ -93,7 +93,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         final mostrarPanelPro = _params.escenario != Escenario.quincho;
 
         return Scaffold(
-          bottomNavigationBar: const BannerAdWidget(),
+          bottomNavigationBar: isPro ? null : const BannerAdWidget(),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
